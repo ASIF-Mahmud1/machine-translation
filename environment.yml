@@ -20,10 +20,14 @@ dependencies:
     - flask
     - boto3
     - ipykernel
+    - nltk==3.7
+    - wget
     - pip:
-        - tensorflow-macos
-        - tensorflow-metal
-        - bayesian-optimization
-        - gym
-        - kaggle
+      - tensorflow-macos
+      - tensorflow-metal
+      - tensorflow-text @ https://github.com/sun1638650145/Libraries-and-Extensions-for-TensorFlow-for-Apple-Silicon/releases/download/v2.8/tensorflow_text-2.8.2-cp39-cp39-macosx_11_0_arm64.whl
+      - bayesian-optimization
+      - gym
+      - kaggle
+        # - -r requirements.txt
         
