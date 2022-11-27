@@ -119,8 +119,8 @@ celerybeat.pid
 
 # SageMath parsed files
 *.sage.py
-
 # Environments
+*.env
 .env
 .venv
 env/
@@ -160,3 +160,4 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+.DS_Store
