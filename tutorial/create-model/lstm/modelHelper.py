@@ -2,6 +2,7 @@ import tensorflow as tf
 import pickle
 from tensorflow import keras
 from keras.utils.vis_utils import plot_model
+from tensorflow.keras.layers import Input, Embedding,Dense,  LSTM
 
 def make_inference_models(encoder_inputs, encoder_states, decoder_inputs,decoder_embedding, decoder_lstm, decoder_dense):
     
@@ -53,4 +54,30 @@ def get_reconstructed_model(model_path):
 
     
     return reconstructed_model, encoder_parameters ,decoder_parameters , encoder_dictionary , decoder_dictionary
+
+
+def generate_encoder_decoder_input_states(model_path):
+    reconstructed_model, encoder_parameters ,decoder_parameters , encoder_dictionary , decoder_dictionary = get_reconstructed_model(model_path)
+    encoder_inputs = reconstructed_model.input[0]  # input_1
+    encoder_outputs, state_h_enc, state_c_enc = reconstructed_model.layers[4].output  # lstm_1
+    encoder_states = [state_h_enc, state_c_enc]
+    encoder_model = keras.Model(encoder_inputs, encoder_states)
+    latent_dim = 256  # Note: may be need to save in drive as well
+
+
+    num_decoder_tokens =decoder_parameters['num_decoder_tokens']
+    max_output_length= decoder_parameters['max_decoder_seq_length']
+    max_input_length= encoder_parameters['max_encoder_seq_length']
+
+    encoder_word_dict=encoder_dictionary
+    decoder_word_dict= decoder_dictionary
+
+
+    decoder_inputs = Input(shape=( max_output_length , ))
+    decoder_embedding = Embedding( num_decoder_tokens, 256 , mask_zero=True) (decoder_inputs)
+
+    decoder_lstm = LSTM( 256 , return_state=True , return_sequences=True , recurrent_dropout=0.2 , dropout=0.2)
+    decoder_dense = Dense( num_decoder_tokens , activation=tf.keras.activations.softmax ) 
+
+    return encoder_inputs, encoder_states, decoder_inputs,decoder_embedding, decoder_lstm, decoder_dense , encoder_word_dict , decoder_word_dict
 
