@@ -79,5 +79,5 @@ def generate_encoder_decoder_input_states(model_path):
     decoder_lstm = LSTM( 256 , return_state=True , return_sequences=True , recurrent_dropout=0.2 , dropout=0.2)
     decoder_dense = Dense( num_decoder_tokens , activation=tf.keras.activations.softmax ) 
 
-    return encoder_inputs, encoder_states, decoder_inputs,decoder_embedding, decoder_lstm, decoder_dense , encoder_word_dict , decoder_word_dict
+    return encoder_inputs, encoder_states, decoder_inputs,decoder_embedding, decoder_lstm, decoder_dense , encoder_word_dict , decoder_word_dict , max_input_length
 
