@@ -24,7 +24,7 @@ def make_inference_models(encoder_inputs, encoder_states, decoder_inputs,decoder
         return encoder_model , decoder_model
 
 
-def get_reconstructed_model(model_path):
+def get_reconstructed_model(model_path,path_encoder_parameters, path_encoder_dictionary, path_decoder_parameters,path_decoder_dictionary):
     reconstructed_model = keras.models.load_model(model_path)
     plot_model(reconstructed_model, to_file='modelsummary.png', show_shapes=True, show_layer_names=True)
     reconstructed_model.summary()
@@ -56,8 +56,8 @@ def get_reconstructed_model(model_path):
     return reconstructed_model, encoder_parameters ,decoder_parameters , encoder_dictionary , decoder_dictionary
 
 
-def generate_encoder_decoder_input_states(model_path):
-    reconstructed_model, encoder_parameters ,decoder_parameters , encoder_dictionary , decoder_dictionary = get_reconstructed_model(model_path)
+def generate_encoder_decoder_input_states(model_path, path_encoder_parameters, path_encoder_dictionary, path_decoder_parameters,path_decoder_dictionary):
+    reconstructed_model, encoder_parameters ,decoder_parameters , encoder_dictionary , decoder_dictionary = get_reconstructed_model(model_path, path_encoder_parameters, path_encoder_dictionary, path_decoder_parameters,path_decoder_dictionary)
     encoder_inputs = reconstructed_model.input[0]  # input_1
     encoder_outputs, state_h_enc, state_c_enc = reconstructed_model.layers[4].output  # lstm_1
     encoder_states = [state_h_enc, state_c_enc]
@@ -78,6 +78,7 @@ def generate_encoder_decoder_input_states(model_path):
 
     decoder_lstm = LSTM( 256 , return_state=True , return_sequences=True , recurrent_dropout=0.2 , dropout=0.2)
     decoder_dense = Dense( num_decoder_tokens , activation=tf.keras.activations.softmax ) 
+    enc_model , dec_model = make_inference_models(encoder_inputs, encoder_states, decoder_inputs,decoder_embedding, decoder_lstm, decoder_dense)
 
-    return encoder_inputs, encoder_states, decoder_inputs,decoder_embedding, decoder_lstm, decoder_dense , encoder_word_dict , decoder_word_dict , max_input_length
+    return  enc_model , dec_model , encoder_word_dict, decoder_word_dict, max_input_length
 
