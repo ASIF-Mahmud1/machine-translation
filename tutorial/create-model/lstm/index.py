@@ -10,6 +10,15 @@ from tensorflow import keras
 from keras.utils.vis_utils import plot_model
 import statistics
 import math
+import os
+import sys
+
+def handle_system_path():
+    preprocessing_path=os.path.abspath(os.path.join('/Users/learn/Desktop/Projects/machine-translation/tutorial/utils')) 
+    sys.path.append(preprocessing_path)      
+    print(sys.path)
+
+handle_system_path()
 
 def createInputDataForEncoder(lines):
     hindi_lines = list()
@@ -26,6 +35,7 @@ def createInputDataForEncoder(lines):
 
     # max_input_length = np.array( length_list ).max()
     max_input_length = math.floor(statistics.mode(length_list))
+    print( 'Hindi max length is {}'.format( max_input_length ))
 
     padded_hindi_lines = preprocessing.sequence.pad_sequences( tokenized_hindi_lines , maxlen=max_input_length , padding='post' )
     encoder_input_data = np.array( padded_hindi_lines )
