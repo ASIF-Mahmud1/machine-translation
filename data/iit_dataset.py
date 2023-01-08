@@ -24,4 +24,4 @@ def createDataset( data_size,type):
     lines= pd.DataFrame(columns=[ "hindi","eng"], data=pairs)
     lines= lines[:data_size]
    
-    return lines
+    return lines, pairs
