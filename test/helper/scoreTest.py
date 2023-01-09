@@ -24,7 +24,8 @@ def text_to_vector(text):
     words = WORD.findall(text)
     return Counter(words)
 def get_cosine_val(text1,text2):
-    
+    text1= text1.lower()
+    text2=text2.lower()
     # turn text into vector counts
     vector1 = text_to_vector(text1)
     vector2 = text_to_vector(text2)
