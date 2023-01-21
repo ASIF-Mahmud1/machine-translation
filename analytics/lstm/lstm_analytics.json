@@ -1,0 +1,1 @@
+[{"Dataset Size":10000,"f_measure_average":0.7647120357,"p_measure_average":0.7756339312,"r_measure_average":0.7649691701,"cosine_similarity":0.7866346809,"bleu-1-grams":0.7476742965,"bleu-1-2-grams":0.653796439,"bleu-1-3-grams":0.5936427701,"bleu-1-4-grams":0.4871865224}]
