@@ -4,7 +4,7 @@ import os
 import sys
 import pandas as pd
 
-sys.path.append('/Users/learn/Desktop/Projects/machine-translation/utils')                                       
+sys.path.append('/Users/learn/Desktop/Projects/machine-translation/machine-learning/utils')                                       
 
 
 from preprocessing_text import removePunctuation, toLowercase
