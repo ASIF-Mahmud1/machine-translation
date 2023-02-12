@@ -19,32 +19,17 @@ with open("./ml-model/ibm_smt.pkl", "rb") as f:
 
 
 @app.get('/')
-def index( sentence=''):
+def index():
+    return {
+        'message': 'This is the homepage of the Statistical Machine Translation ',
+    }
+
+# example: url/predict?sentence=%22make%20life%20good,%20dont%20get%20bitter%22
+@app.get('/predict')
+def get_translation(sentence:str):
     print('Query params ',sentence)
     result=predict_sentence(sentence)
 
-    return {
-        'message': 'This is the homepage of the Statistical Machine Translation ',
-        'result':result
-    }
-
-
-
-@app.post('/predictSentence')
-def get_translation(data:Sentence):
-    print(type(data))
-    fr_sent =data.sentence.split()
-    tr_sent = []
-    for w in fr_sent:
-        probs = ibm_model.translation_table[w]
-        if(len(probs)==0):
-            continue
-        sorted_words = sorted([(k,v) for k, v in probs.items()],key=lambda x: x[1], reverse=True)
-        top_word = sorted_words[1][0]
-        if top_word is not None:
-            tr_sent.append(top_word)
-
-    result=" ".join(tr_sent)
     return {'prediction': result}
     
 # NGROK URL    
