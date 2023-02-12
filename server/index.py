@@ -1,21 +1,16 @@
-from lib2to3.pytree import Base
 from statistics import mode
 import uvicorn
 import pickle
 from fastapi import FastAPI
-
 from pydantic import BaseModel
 from pyngrok import ngrok
+
 from inference import predict_sentence
 app = FastAPI()
 
 
-
 class Sentence(BaseModel):
     sentence: str
-
-with open("./ml-model/ibm_smt.pkl", "rb") as f:
-    ibm_model = pickle.load(f)
 
 
 @app.get('/')
@@ -25,18 +20,21 @@ def index():
     }
 
 # example: url/predict?sentence=%22make%20life%20good,%20dont%20get%20bitter%22
+
+
 @app.get('/predict')
-def get_translation(sentence:str):
-    print('Query params ',sentence)
-    result=predict_sentence(sentence)
+def get_translation(sentence: str):
+    print('Query params ', sentence)
+    result = predict_sentence(sentence)
 
     return {'prediction': result}
-    
-# NGROK URL    
+
+
+# NGROK URL
 ngrok.connect(8000, )
 tunnels = ngrok.get_tunnels()
-print("NGROK URL\n",tunnels)
-# NGROK URL    
+print("NGROK URL\n", tunnels)
+# NGROK URL
 
 if __name__ == '__main__':
     uvicorn.run(app, host='127.0.0.1', port=4000, debug=True)
