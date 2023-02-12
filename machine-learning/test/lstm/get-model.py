@@ -1,19 +1,17 @@
 import numpy as np
 import pickle
-from keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.utils import to_categorical
-from keras.utils.vis_utils import plot_model
-import os
-import sys
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 import pandas as pd
 from google.transliteration import transliterate_word
+from tensorflow import keras
+
 model_size='15000'
 
 def load_models_and_parameters(model_size):
 
     path=model_size+'/'
 
-    from tensorflow import keras
+ 
     model = keras.models.load_model(path+'lstm_model')
     with open(path+ "src_parameters.pickle", 'rb') as handle:
         src_parameters = pickle.load(handle)
