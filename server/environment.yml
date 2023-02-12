@@ -21,6 +21,7 @@ dependencies:
     - boto3
     - ipykernel
     - nltk==3.7
+    - keras-preprocessing
 
     - pip:
       - tensorflow-macos
