@@ -6,7 +6,7 @@ from fastapi import FastAPI
 
 from pydantic import BaseModel
 from pyngrok import ngrok
-
+from inference import predict_sentence
 app = FastAPI()
 
 
@@ -19,8 +19,14 @@ with open("./ml-model/ibm_smt.pkl", "rb") as f:
 
 
 @app.get('/')
-def index():
-    return {'message': 'This is the homepage of the Statistical Machine Translation '}
+def index( sentence=''):
+    print('Query params ',sentence)
+    result=predict_sentence(sentence)
+
+    return {
+        'message': 'This is the homepage of the Statistical Machine Translation ',
+        'result':result
+    }
 
 
 

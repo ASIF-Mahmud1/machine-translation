@@ -79,3 +79,17 @@ source= encoded_hindi
 tar_tokenizer=target_tokenizer
 
 translation = predict_seq(model, tar_tokenizer, source)
+
+def predict_sentence(sentence:str):
+    print("Input sentence ", sentence)
+    transliterate_eng_hindi = transliterate_word(sentence, lang_code='hi', max_suggestions=1)
+    encoded_hindi = encode_sequences(src_tokenizer, src_length, transliterate_eng_hindi)
+    source= encoded_hindi
+    tar_tokenizer=target_tokenizer
+    translation = predict_seq(model, tar_tokenizer, source)
+    print("Output sentence ", translation)
+    return translation
+
+
+
+
