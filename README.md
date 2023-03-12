@@ -1,46 +1,56 @@
-# Translator
 
-This is a full-stack end-to-end application, that lets you translate language from English to French
-Frontend is a mobile application based on react native. Backend is based on a python framework: Fast API.
+**End to End Machine Translation System**
 
+  
+  
 
-# Folder Structure
+In this article I will walk you through the machine learning project that is able to translate sentences from hindi to english. This project has all the key components that are necessary for an end to end machine learning pipeline.
 
-**client** : source code for react native application
-
-**server**: source code for REST-ful application based on Fast API. Training machine learning model along with dataset
-
-## client
-1. cd client
-
-2. npm install
-
-3. Open a terminal run:  _**npm start**_
-## server
-### Run the Application in your machine
- 1.  cd *server*
- 2.  create  a virtual environment:  ***python3.8 -m venv venv/*** 
- 3.  run the   virtual environment:  ***source venv/bin/activate*** 
- 4. install dependencies : ***pip install -r requirements.txt***
- 5.  run the server :   ***uvicorn index:app --reload***
- ### Deploy in Heroku with Docker
- Follow this article :  https://testdriven.io/blog/fastapi-machine-learning/
-### Run Docker Image in your machine 
- 1. Build Docker image :    ***sudo docker build -t registry.heroku.com/polar-sea-42815/web  .***
- 2. ***docker run --name fastapi-m -e PORT=8000 -p 8000:8000 -d  registry.heroku.com/polar-sea-42815/web:latest***
-  or ...
- 3. ***sudo docker run  -e PORT=8000 -p 8000:8000 -d registry.heroku.com/polar-sea-42815/web:latest***
- 5.  Open in browser: http://localhost:8000/
-
-
-
-
+This has 3 key components: client , server, machine-learning
 
   
 
-# Keywords
-Python, Fast API, REST API, docker,  machine learning, NLP
+**client**: a mobile application based on javascript framework : react native. The application communicates with the server via API to translate sentences from hindi to english
 
-## Notes
-For futher queries, please contact me via email at :  [asif01050105@gmail.com](mailto:asif01050105@gmail.com)  - Asif Mahmud
+  
 
+**server**: build with Fast API , a popular web framework for python. The API endpoint: /predict
+
+is made available that takes sentences as params to make the translation.
+
+  
+
+**machine-learning**: it consist of the program that trains the model; machine translation evaluations (BLEU , ROUGE scores ).
+
+  
+
+**Training the Model**
+
+  
+
+**Training Data**:
+
+We have used the parallel corpus from [IIT Bombay English-Hindi Translation Dataset](https://www.cfilt.iitb.ac.in/iitb_parallel/). The size of our training dataset is 15000. 10% of our data is used for testing
+
+  
+
+**Preprocessing**:
+
+1.  All characters are converted to lowercase
+    
+2.  Number are removed
+    
+3.  Then tokenizers are created for both src and target sentences
+    
+4.  Sentences are encoded to sequences of integers.
+    
+5.  Each encoded sentence has a fixed length of 15.
+    
+
+  
+
+**Model Architecture**:
+
+The model is based on LSTM (Long Short Term Memory) which is a type of recurrent neural network (RNN) . LSTM networks can remember long-term dependencies in sequential data, making them well-suited for machine translation tasks. They are able to do this by using a series of memory cells, which can be selectively updated or forgotten based on the input data. This allows the network to learn patterns in the input data over time, and to use this knowledge to make better translations.
+
+In this project we have used the encoder-decoder architecture for translation. The encoder LSTM network takes in the input sentence and produces a fixed-length vector representation of the sentence, which is then passed to the decoder LSTM network. The decoder LSTM network takes the encoder's output vector as input and generates the translated sentence word by word.
