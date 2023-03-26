@@ -1,26 +1,41 @@
 
   
 
+  
+
 # How To Run Server Application
 
   
 
-# Run Application
+  
+
+# To Run Application:
 
   
+Install environment 
+
+    conda activate /Users/learn/Desktop/Projects/machine-translation/server/venv
+
 Activate environment
 
-    conda activate /Users/learn/Desktop/Projects/machine-translation/machine-learning/.env
   
-Install kernel 
 
-    python -m ipykernel install --user --name machine-translation --display-name "machine-translation"
-    
+conda activate /Users/learn/Desktop/Projects/machine-translation/machine-learning/venv
+
+Install kernel
+
+  
+
+python -m ipykernel install --user --name machine-translation --display-name "machine-translation"
+
 Open Jupyter
-    
 
+  
+  
 
-    jupyter notebook
+jupyter notebook
+
+  
 
   
 
@@ -28,11 +43,17 @@ Open Jupyter
 
   
 
+  
+
 ## train
 
   
 
+  
+
 ### lstm:
+
+  
 
   
 
@@ -40,11 +61,17 @@ index.ipynb: train lstm model that can translate from hindi to english **data_si
 
   
 
+  
+
 ## test
 
   
 
+  
+
 ### lstm:
+
+  
 
   
 
@@ -52,7 +79,11 @@ index.ipynb: uses trained model (from the disk) to calculate performance metrics
 
   
 
+  
+
 ## model
+
+  
 
   
 
@@ -60,7 +91,11 @@ index.ipynb: uses trained model (from the disk) to calculate performance metrics
 
   
 
+  
+
 consist of all the trained model along with their dictionaries. You can load any of the model from here
+
+  
 
   
 
@@ -68,7 +103,11 @@ consist of all the trained model along with their dictionaries. You can load any
 
   
 
+  
+
 iit_dataset.py: loads train and test dataset from iit archive
+
+  
 
   
 
@@ -76,7 +115,11 @@ iit_dataset.py: loads train and test dataset from iit archive
 
   
 
+  
+
 index.ipynb: bar chart of performance metric for trained model analytics.json: BLEU, ROUGE score for model for different size are save in this file
+
+  
 
   
 
@@ -84,7 +127,11 @@ index.ipynb: bar chart of performance metric for trained model analytics.json: B
 
   
 
+  
+
 consist of helper functions
+
+  
 
   
 
@@ -92,7 +139,11 @@ consist of helper functions
 
   
 
+  
+
 machine translation , machine learning, NLP, , tensorflow
+
+  
 
   
 
@@ -100,11 +151,16 @@ machine translation , machine learning, NLP, , tensorflow
 
   
 
+  
+
 For futher queries, please contact me via email at : [asif01050105@gmail.com](mailto:asif01050105@gmail.com  "mailto:asif01050105@gmail.com")
+
+  
 
 [1421015@iub.edu.bd](mailto:1421015@iub.edu.bd  "mailto:1421015@iub.edu.bd")
 
   
 
-**Asif Mahmud**
+  
 
+**Asif Mahmud**
