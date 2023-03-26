@@ -18,22 +18,17 @@ Install environment
 
 Activate environment
 
-  
-
-conda activate /Users/learn/Desktop/Projects/machine-translation/machine-learning/venv
+    conda activate /Users/learn/Desktop/Projects/machine-translation/machine-learning/venv
 
 Install kernel
 
   
 
-python -m ipykernel install --user --name machine-translation --display-name "machine-translation"
+    python -m ipykernel install --user --name machine-translation --display-name "machine-translation"
 
 Open Jupyter
 
-  
-  
-
-jupyter notebook
+    jupyter notebook
 
   
 
@@ -164,3 +159,5 @@ For futher queries, please contact me via email at : [asif01050105@gmail.com](ma
   
 
 **Asif Mahmud**
+
+
