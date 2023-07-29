@@ -14,7 +14,7 @@
   
 Install environment 
 
-    conda activate /Users/learn/Desktop/Projects/machine-translation/server/venv
+ conda env create --file environment.yml --prefix ./venv
 
 Activate environment
 
