@@ -3,6 +3,7 @@
 
 .env
 notes.txt
+temp_model/
 gitCommands.ipynb
 
 ## My Extra ignores
