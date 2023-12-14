@@ -3,7 +3,7 @@
 
   
 
-# How To Run Server Application
+# Train, Test, Evaluate. Repeat.
 
   
 
