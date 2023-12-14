@@ -79,6 +79,27 @@ In this project we have used the encoder-decoder architecture for translation. T
 ![Alt text](screenshots/score-model_size.png)
 ![Alt text](screenshots/bar_chart_score-model_size.png)
 
+# Find More About Each Components on their separate READMEs:
+
+1. [Client README](client/README.md)
+2. [Server README](server/README.md)
+3. [Machine Learning README](machine-learning/README.md)
+
+
+
+
+
+
+
+######
+
+
+# Future Works:
+
+1. Train on models like BERT and GPT
+2. Evalaute metrics (ROUGE, BLEU) on  models like BERT and GPT
+3. Update client side to take Hindi as input 
+
 
 # Keywords
 
