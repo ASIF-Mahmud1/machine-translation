@@ -68,6 +68,8 @@ We have used the parallel corpus from [IIT Bombay English-Hindi Translation Data
 \
 **Model Architecture**:
 
+![Alt text](screenshots/simple-architecture.png)
+
 The model is based on LSTM (Long Short Term Memory) which is a type of recurrent neural network (RNN) . LSTM networks can remember long-term dependencies in sequential data, making them well-suited for machine translation tasks. They are able to do this by using a series of memory cells, which can be selectively updated or forgotten based on the input data. This allows the network to learn patterns in the input data over time, and to use this knowledge to make better translations.
 
   
