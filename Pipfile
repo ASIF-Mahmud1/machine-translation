@@ -20,6 +20,7 @@ boto3 = "*"
 ipykernel = "*"
 nltk = "*"
 keras = "*"
+datasets = "==1.18.1"
 
 [dev-packages]
 
