@@ -1,1 +1,7 @@
+.vscode
 notes.txt
+__pycache__/
+.DS_Store
+*.temp.*
+**/*.temp/
+logs/
