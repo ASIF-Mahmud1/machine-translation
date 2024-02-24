@@ -19,6 +19,7 @@ flask = "*"
 boto3 = "*"
 ipykernel = "*"
 nltk = "*"
+keras = "*"
 
 [dev-packages]
 
