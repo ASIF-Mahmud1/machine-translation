@@ -3,9 +3,11 @@ from numpy import array
 import os
 import sys
 import pandas as pd
-
-sys.path.append('/Users/learn/Desktop/Projects/machine-translation/machine-learning/utils')                                       
-
+############################ APPEND PATH #######################################
+current_script_directory = os.path.abspath(os.path.dirname(__file__))
+project_root=os.path.abspath(os.path.join(current_script_directory,'../utils'))
+sys.path.append(project_root)
+############################ APPEND PATH #######################################
 
 from preprocessing_text import removePunctuation, toLowercase
 
