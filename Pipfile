@@ -21,6 +21,7 @@ ipykernel = "*"
 nltk = "*"
 keras = "*"
 datasets = "==1.18.1"
+tensorflow = "*"
 
 [dev-packages]
 
