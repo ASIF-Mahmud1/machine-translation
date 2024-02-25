@@ -1,3 +1,23 @@
+"""
+This file contains a Python script implementing a sequence-to-sequence translation model using LSTM (Long Short-Term Memory) neural networks with the Keras library. 
+The purpose of this script is to train a model for translating text from one language to another.
+
+The Translator class defined in this script provides methods for training the translation model, saving and loading the trained model and associated parameters, generating predictions on test data, and comparing the model's predictions with the actual target sequences.
+
+The main functionalities of this script include:
+
+‣  Cleaning input text data.
+‣  Preprocessing the text data to prepare it for training.
+‣  Creating and compiling the sequence-to-sequence model architecture.
+‣  Training the model on the prepared data.
+‣  Saving the trained model and its parameters for future use.
+‣  Loading a saved model and associated parameters.
+‣  Generating predictions on a test dataset and comparing them with the ground truth.
+
+To use this script, users need to set the desired training size before running the script. After execution, the script will train the translation model and save it along with its parameters. Additionally, users can load the trained model, generate predictions on new data, and evaluate the model's performance.
+
+"""
+
 import os
 import sys
 import re
@@ -21,7 +41,14 @@ print("Train LSTM", tf.__version__)
 TRAINING_SIZE=5000
 
 class Translator():
+
     def __init__(self, training_size=10000) -> None:
+
+        """Initialize the Translator object.
+
+        Args:
+            training_size (int, optional): Number of training samples to use. Defaults to 10000.
+        """
         self.model=None
         self.training_size=training_size
         self.idx_src=0
@@ -38,11 +65,23 @@ class Translator():
         pass
 
     def _get_training_data(self):
+
+        """Fetch training data."""
         pool_oftexts, pairs =createDataset(data_size=self.training_size, type="train")
         dataset= pool_oftexts
         return dataset
     
     def clean(self,string):
+
+        """Clean the input string.
+
+        Args:
+            string (str): Input string to be cleaned.
+
+        Returns:
+            str: Cleaned string.
+        """
+
         string = string.replace("\u202f"," ")
         string = string.lower()
         for p in punctuation + "«»" + "0123456789":
@@ -53,11 +92,13 @@ class Translator():
         return string
     
     def _generate_train_test_split(self):
-        ''' 
-        GET TRAINING DATA AND SPLIT THEM TO TRAIN AND TEST SET
 
-        RETURN dataset, train, test
-        '''
+        """Generate training and testing dataset splits.
+
+        Returns:
+            tuple: Tuple containing dataset, training set, and testing set.
+        """
+        
         dataset= self._get_training_data()
         total_sentences= len(dataset)
         test_proportion = 0.1
@@ -72,21 +113,52 @@ class Translator():
         train, test = dataset[:train_test_threshold], dataset[train_test_threshold:]
 
         return dataset, train, test
+    
     def create_tokenizer(self,lines):
-        # fit a tokenizer
+
+        """Create a tokenizer based on input lines.
+
+        Args:
+            lines (list): List of strings to tokenize.
+
+        Returns:
+            Tokenizer: Created tokenizer.
+        """
         tokenizer = Tokenizer()
         tokenizer.fit_on_texts(lines)
         return tokenizer
  
 
     def encode_sequences(self,tokenizer, length, lines):
-        # encode and pad sequences
+
+        """Encode sequences using the given tokenizer and pad them to a specified length.
+
+        Args:
+            tokenizer (Tokenizer): Tokenizer to use for encoding.
+            length (int): Length to pad sequences to.
+            lines (list): List of sequences to encode.
+
+        Returns:
+            numpy.ndarray: Encoded and padded sequences.
+        """
+      
         X = tokenizer.texts_to_sequences(lines) # integer encode sequences
         X = pad_sequences(X, maxlen=length, padding='post') # pad sequences with 0 values
         return X
     
+    
     def encode_output(self,sequences, vocab_size):
-        # one hot encode target sequence
+
+        """One-hot encode target sequences.
+
+        Args:
+            sequences (numpy.ndarray): Sequences to encode.
+            vocab_size (int): Size of the vocabulary.
+
+        Returns:
+            numpy.ndarray: One-hot encoded sequences.
+        """
+
         ylist = list()
         for sequence in sequences:
             encoded = to_categorical(sequence, num_classes=vocab_size)
@@ -97,12 +169,9 @@ class Translator():
  
 
     def _convert_sentence_to_vectors(self):
-        ''' 
-        GENERATE TRAIN TEST SPLIT
-        CREATE TARGET TOKENIZER
-        CREATE SOURCE TOKENIZER
-        RETURN VECTORS FOR TRAINING
-        '''
+         
+        """Convert sentences to vector representations for training."""
+
         dataset, train, test= self. _generate_train_test_split()
         # Prepare target tokenizer
         tar_tokenizer = self.create_tokenizer(dataset[:, self.idx_tar]) #save
@@ -111,21 +180,23 @@ class Translator():
         print(f'\nTarget ({self.target_str}) Vocabulary Size: {tar_vocab_size}')
         print(f'Target ({self.target_str}) Max Length: {tar_length}')
 
-        # Prepare source tokenizer
+        '''Prepare source tokenizer'''
         src_tokenizer = self.create_tokenizer(dataset[:, self.idx_src])  #save
         src_vocab_size = len(src_tokenizer.word_index) + 1  #save
-        src_length = 15  #save
-        #### SAVE
+        src_length = 15  
+
+        '''Save Parameters'''
         self.tar_tokenizer=tar_tokenizer
         self.tar_vocab_size=tar_vocab_size
         self.src_tokenizer=src_tokenizer
         self.tar_length=tar_length
         self.src_vocab_size=src_vocab_size
         self.src_length=src_length
-        ### SAVE
+    
         print(f'\nSource ({self.source_str}) Vocabulary Size: {src_vocab_size}')
         print(f'Source ({self.source_str}) Max Length: {src_length}\n')
-        # PREPARING TRAINING DATA
+
+        '''PREPARING TRAINING DATA '''
         trainX = self.encode_sequences(src_tokenizer, src_length, train[:, self.idx_src])
         trainY = self.encode_sequences(tar_tokenizer, tar_length, train[:, self.idx_tar])
         trainY = self.encode_output(trainY, tar_vocab_size)
@@ -134,7 +205,20 @@ class Translator():
         pass
     
     def create_model(self, src_vocab, tar_vocab, src_timesteps, tar_timesteps, n_units):
-        # Create the model
+      
+        """Create the sequence-to-sequence model.
+
+        Args:
+            src_vocab (int): Source vocabulary size.
+            tar_vocab (int): Target vocabulary size.
+            src_timesteps (int): Length of source sequences.
+            tar_timesteps (int): Length of target sequences.
+            n_units (int): Number of units in the LSTM layer.
+
+        Returns:
+            Sequential: Created model.
+        """
+
         model = Sequential()
         model.add(Embedding(src_vocab, n_units,  mask_zero=True))
         model.add(LSTM(n_units))
@@ -144,16 +228,14 @@ class Translator():
         return model
     
     def train(self):
+        """Train the translation model."""
+
         self._convert_sentence_to_vectors()
-        # Create model
+     
         model=self.model
         model = self.create_model(self.src_vocab_size, self.tar_vocab_size, self.src_length, self.tar_length, 256)
         model.compile(optimizer='adam', loss='categorical_crossentropy')
-        #######################
-        # display("TRAIN X: ",self.trainX)
-        # display("TRAIN Y ",self.trainY)
-        # display(model)
-        #######################
+       
         history = model.fit(self.trainX, 
                self.trainY, 
                 epochs=2 ,
@@ -171,8 +253,7 @@ class Translator():
 
         model.summary()
         self.model=model
-        # save model in computer '/Users/learn/Desktop/Projects/machine-translation/machine-learning/data'
-        # model.save(filepath='../temp_model/')
+
         self.save_models_and_parameters(total_sentences=TRAINING_SIZE, model= model,src_tokenizer=self.src_tokenizer, tar_tokenizer=self.tar_tokenizer, src_length=self.src_length, tar_length=self.tar_length, src_vocab_size=self.src_vocab_size,tar_vocab_size=self.tar_vocab_size )
         pd.DataFrame(history.history).plot()
         plt.title("Loss")
@@ -180,12 +261,21 @@ class Translator():
         pass
 
     def save_models_and_parameters( self, total_sentences ,model ,src_tokenizer , tar_tokenizer, src_length, tar_length, src_vocab_size,tar_vocab_size ):
-        ''' 
-        SAVE MODEL AND OTHER PARAMETERS IN DESIGNATED FOLDER
-        '''
-        print("MODEL SAVED")
+       
+        """Save the model and associated parameters in a designated folder.
+
+            Args:
+                total_sentences (int): Total number of sentences.
+                model (keras.Model): Trained model to be saved.
+                src_tokenizer (Tokenizer): Tokenizer for the source language.
+                tar_tokenizer (Tokenizer): Tokenizer for the target language.
+                src_length (int): Length of source sequences.
+                tar_length (int): Length of target sequences.
+                src_vocab_size (int): Size of the source vocabulary.
+                tar_vocab_size (int): Size of the target vocabulary.
+        """
+       
         model_name =str(total_sentences)
-        # path="../../model/lstm/"+model_name+"/"
         path='../temp_model/'+model_name+"/"
         
         src_parameters={
@@ -212,6 +302,14 @@ class Translator():
         pass
 
     def load_model(self,model_path ):
+       
+        """
+        Load a saved model and associated parameters.
+
+        Args:
+            model_path (str): Path to the directory containing the saved model and parameters.
+        """
+
         model, src_tokenizer, target_tokenizer, src_parameters, target_parameters= self._load_models_and_parameters(model_path)
         print(model, src_tokenizer, target_tokenizer, src_parameters, target_parameters)
        
@@ -229,6 +327,17 @@ class Translator():
         pass
 
     def _load_models_and_parameters(self, model_size):
+
+        """
+        Load the saved model and associated parameters from the specified directory.
+
+        Args:
+           model_size (str): Path to the directory containing the saved model and parameters.
+
+        Returns:
+            tuple: Tuple containing loaded model, source tokenizer, target tokenizer, source parameters, and target parameters.
+        """
+
         path=model_size+'/'
 
         model = keras.models.load_model(path+'lstm_model')
@@ -246,14 +355,36 @@ class Translator():
         return model, src_tokenizer, target_tokenizer, src_parameters, target_parameters
     
     def word_for_id(self,integer, tokenizer):
-        # map an integer to a word
+        """
+        Map an integer to a word using the provided tokenizer.
+
+        Args:
+            integer (int): Integer to be mapped to a word.
+            tokenizer (Tokenizer): Tokenizer containing word-to-index mapping.
+
+        Returns:
+            str: Word corresponding to the integer index.
+        """
+
+     
         for word, index in tokenizer.word_index.items():
             if index == integer:
                 return word
         return None
  
     def predict_seq(self, model, tokenizer, source):
-        # generate target from a source sequence
+       
+        """Generate a target sequence from a source sequence using the provided model and tokenizer.
+
+        Args:
+            model (keras.Model): Trained model for sequence prediction.
+            tokenizer (Tokenizer): Tokenizer for the target language.
+            source (numpy.ndarray): Encoded source sequence.
+
+        Returns:
+            str: Predicted target sequence.
+        """
+
         prediction = model.predict(source, verbose=0)[0]
         integers = [np.argmax(vector) for vector in prediction]
         target = list()
@@ -264,8 +395,22 @@ class Translator():
             target.append(word)
         return ' '.join(target)
     
+
     def compare_prediction(self,model, tar_tokenizer, sources, raw_dataset, limit=20):
-        # evaluate a model
+        """
+        Compare the predictions made by the model with the actual target sequences.
+
+        Args:
+            model (keras.Model): Trained model for sequence prediction.
+            tar_tokenizer (Tokenizer): Tokenizer for the target language.
+            sources (numpy.ndarray): Encoded source sequences.
+            raw_dataset (list): List of raw source-target pairs.
+            limit (int, optional): Maximum number of predictions to compare. Defaults to 20.
+
+        Returns:
+            tuple: Tuple containing actual and predicted sequences.
+        """
+       
         actual, predicted  = [], []
         src = f'{self.source_str.upper()} (SOURCE)'
         tgt = f'{self.target_str.upper()} (TARGET)'
@@ -288,6 +433,11 @@ class Translator():
         return actual, predicted
     
     def genereate_test_results(self):
+        """Generate and compare predictions on a test dataset.
+
+        Returns:
+            tuple: Tuple containing actual and predicted sequences.
+        """
         data_size=1000
 
         pool_oftexts, pairs =createDataset(data_size=data_size, type="train")
