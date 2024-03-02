@@ -38,11 +38,10 @@ sys.path.append('../data')
 from iit_dataset import createDataset
 print("Train LSTM", tf.__version__)
 
-TRAINING_SIZE=5000
 
 class Translator():
 
-    def __init__(self, training_size=10000) -> None:
+    def __init__(self, training_size=10000,model_directory='../temp_model') -> None:
 
         """Initialize the Translator object.
 
@@ -51,6 +50,7 @@ class Translator():
         """
         self.model=None
         self.training_size=training_size
+        self.model_directory=model_directory
         self.idx_src=0
         self.idx_tar = 1
         self.source_str, self.target_str = "Hindi", "English"
@@ -276,7 +276,7 @@ class Translator():
         """
        
         model_name =str(total_sentences)
-        path='../temp_model/'+model_name+"/"
+        path= self.model_directory+"/" + model_name+"/"
         
         src_parameters={
             'src_length': src_length,
@@ -456,6 +456,7 @@ class Translator():
 if __name__ == "__main__":
 
     # SET THE VALUES BEFORE RUNNING
-    TRAINING_SIZE=3000
-    translator= Translator(training_size=TRAINING_SIZE)
+    TRAINING_SIZE=2000
+    MODEL_DIRECTORY='../model'
+    translator= Translator(training_size=TRAINING_SIZE, model_directory=MODEL_DIRECTORY)
     translator.train()
