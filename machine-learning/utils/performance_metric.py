@@ -3,7 +3,7 @@ from statistics import mean
 from scoreTest import get_cosine_val
 from nltk.translate.bleu_score import corpus_bleu
 import tensorflow as tf
-import tensorflow_text as text
+# import tensorflow_text as text
  
 def word_for_id(integer, tokenizer):
     # map an integer to a word
@@ -58,20 +58,20 @@ def bleu_score(actual, predicted):
     
     return bleu_dic
 
-def calculate_ROUGE(actual, predicted):
-    hypotheses = tf.ragged.constant(predicted)
-    references = tf.ragged.constant(actual)
+# def calculate_ROUGE(actual, predicted):
+#     hypotheses = tf.ragged.constant(predicted)
+#     references = tf.ragged.constant(actual)
 
-    rouge_test= text.metrics.rouge_l(hypotheses, references)
-    f_measure_list= rouge_test.f_measure
-    p_measure_list= rouge_test.p_measure
-    r_measure_list= rouge_test.r_measure
+#     rouge_test= text.metrics.rouge_l(hypotheses, references)
+#     f_measure_list= rouge_test.f_measure
+#     p_measure_list= rouge_test.p_measure
+#     r_measure_list= rouge_test.r_measure
   
 
-    f_measure_average= (f_measure_list.numpy()).mean()
-    p_measure_average= (p_measure_list.numpy()).mean()
-    r_measure_average=(r_measure_list.numpy()).mean()
-    return { "f_measure_average":f_measure_average, "p_measure_average":p_measure_average, "r_measure_average":r_measure_average  }  
+#     f_measure_average= (f_measure_list.numpy()).mean()
+#     p_measure_average= (p_measure_list.numpy()).mean()
+#     r_measure_average=(r_measure_list.numpy()).mean()
+#     return { "f_measure_average":f_measure_average, "p_measure_average":p_measure_average, "r_measure_average":r_measure_average  }  
 
 
 
