@@ -457,6 +457,6 @@ if __name__ == "__main__":
 
     # SET THE VALUES BEFORE RUNNING
     TRAINING_SIZE=2000
-    MODEL_DIRECTORY='../model'
+    MODEL_DIRECTORY='../model/lstm'
     translator= Translator(training_size=TRAINING_SIZE, model_directory=MODEL_DIRECTORY)
     translator.train()
