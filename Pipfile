@@ -20,8 +20,10 @@ boto3 = "*"
 ipykernel = "*"
 nltk = "*"
 keras = "*"
-datasets = "==1.18.1"
+datasets = "*"
 tensorflow = "*"
+evaluate = "*"
+rouge-score = "*"
 
 [dev-packages]
 
