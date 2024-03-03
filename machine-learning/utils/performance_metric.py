@@ -48,6 +48,22 @@ def create_dataframe_to_score(model, tar_tokenizer, sources, raw_dataset):
     return actual, predicted, actual_rouge, average_cosine
 
 
+def get_predictions(model, tar_tokenizer, sources, raw_dataset):
+    ''' Get the bleu score of a model'''
+
+    actual, predicted = [], []
+    for i, source in enumerate(sources):
+        ''' translate encoded source text'''
+        source = source.reshape((1, source.shape[0]))
+        translation = predict_seq(model, tar_tokenizer, source)
+        raw_src, raw_target = raw_dataset[i]
+        actual.append(raw_target)
+        predicted.append(translation)
+       
+    return actual, predicted, 
+
+
+
 def bleu_score(actual, predicted):
     # Get the bleu score of a model
     bleu_dic = {}
